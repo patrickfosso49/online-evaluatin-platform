@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Questionaire {
+public class Questionnaire {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,6 @@ public class Questionaire {
     @Column
     private LocalTime time;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "questionnaire")
     private Collection<Question> questions;
 }
