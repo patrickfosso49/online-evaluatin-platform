@@ -10,6 +10,4 @@ import jakarta.persistence.OneToMany;
 public class Teacher extends User {
    
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "teacher")
-    private Collection<Class> classes;
 }
