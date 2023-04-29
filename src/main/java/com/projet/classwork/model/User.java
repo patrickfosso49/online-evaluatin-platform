@@ -20,22 +20,22 @@ public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    protected Long id;
 
     @Column(nullable = false, unique = true)
-    private String registrationNumber;
+    protected String registrationNumber;
 
     @Column(nullable = false, length = 80)
-    private String firstName;
+    protected String firstName;
 
     @Column(nullable = false , length = 80)
-    private String lastName;
+    protected String lastName;
 
     @Column(nullable = false, unique = true)
-    private String email;
+    protected String email;
 
     @Column(nullable = false)
-    private String password;
+    protected String password;
 
     public String getRole() {
         return this.getClass().getSimpleName();

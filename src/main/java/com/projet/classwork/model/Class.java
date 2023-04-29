@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,10 +31,16 @@ public class Class {
     private String name;
 
     
-    @OneToMany(mappedBy = "class1", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "class1", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Collection<Evaluation> evaluations;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
+
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }
