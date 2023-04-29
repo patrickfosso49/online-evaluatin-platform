@@ -2,6 +2,7 @@ package com.ue_project.classwork.security.config;
 
 import com.ue_project.classwork.model.CustomUserDetails;
 import com.ue_project.classwork.repository.TeacherRepository;
+import com.ue_project.classwork.repository.UserRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-	private final TeacherRepository repo;
+	private final UserRepo repo;
 
 	@Bean//beans are always public
 	public UserDetailsService  userteacherDetailsService() {
