@@ -1,14 +1,11 @@
 package com.projet.classwork.model;
 
-import java.time.LocalTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,14 +31,13 @@ public class Question {
     @Column
     private List<String> choices;
 
-    @Column(nullable = true)
-    private LocalTime time;
+    @Column
+    private int duration;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Answer answer;
     
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Questionnaire questionnaire;
 
 }
