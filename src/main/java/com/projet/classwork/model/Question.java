@@ -3,6 +3,7 @@ package com.projet.classwork.model;
 import java.util.List;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +37,7 @@ public class Question {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Answer answer;
-    
+
     @ManyToOne
     private Questionnaire questionnaire;
 

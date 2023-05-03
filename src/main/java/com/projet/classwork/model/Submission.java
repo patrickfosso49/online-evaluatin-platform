@@ -1,7 +1,7 @@
 package com.projet.classwork.model;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 
 import jakarta.persistence.Column;
@@ -25,16 +25,17 @@ public class Submission {
     private Long id;
 
     @Column
-    private Float mark;
+    private int mark;
 
     @Column(nullable = false)
     private LocalDateTime time;
-
 
     @ManyToOne
     private Student student;
 
     @ManyToOne
     private Questionnaire questionnaire;
+
+
 
 }

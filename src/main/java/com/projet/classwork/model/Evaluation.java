@@ -39,10 +39,10 @@ public class Evaluation {
     @Column
     private LocalDateTime expiration;
 
+
     @OneToOne(cascade = CascadeType.ALL)
     private Questionnaire questionnaire;
 
-    
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
