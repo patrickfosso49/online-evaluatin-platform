@@ -33,9 +33,10 @@ public class SubmissionController {
         return submissionService.findSubmissionByID(submissionId);
     }
 
-    @PostMapping("/correctSubmission")
-    public Submission getSubmissionCorrection( @Validated @RequestBody Submission submission){
-        return submissionService.correctSubmission(submission);
+    @GetMapping("/correctSubmission/{id}")
+    public Submission getSubmissionCorrection( @PathVariable("id")
+                                                   Long submissionId){
+        return submissionService.correctSubmission(submissionId);
     }
 
     @DeleteMapping("/delete/{id}")

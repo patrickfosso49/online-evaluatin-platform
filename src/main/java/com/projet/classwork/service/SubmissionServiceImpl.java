@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -54,25 +55,40 @@ public class SubmissionServiceImpl implements SubmissionService{
     }
 
     @Override
-    public Submission correctSubmission(Submission submission) {
+    public Submission updateSubmission(Submission submission, Long ID) {
+        Submission submissionToUpdate = submisionRepository.findById(ID).get();
+
+        if(Objects.nonNull(submission.getTime()) &&
+                !"".equalsIgnoreCase(submission.getTime().toString())){
+            submissionToUpdate.setTime(submission.getTime());
+        }  if(!"".equalsIgnoreCase(submission.getMark()+"")){
+            submissionToUpdate.setMark(submission.getMark());
+        }
+        return submisionRepository.save(submissionToUpdate);
+    }
+
+    @Override
+    public Submission correctSubmission(Long submissionID) {
+        boolean hasMatched = false;
+        Long propID = 0L;
         //get proposition from submission
-        List<Proposition> propositionListForOneSubmission =  propositionService.fetchAllProposition();// all the propositions from db
-        for(int i = 0; i < propositionListForOneSubmission.size(); i++){
-            if(propositionListForOneSubmission.get(i).getSubmission().getId() == submission.getId()){// the proposition matches with the submission
-                propositionListForOneSubmission.set(i, propositionListForOneSubmission.get(i));// proposition list for a single submission
+       List<Proposition> Allpropositions =  propositionService.fetchAllProposition();// all the propositions from db
+        for(int i = 0; i < Allpropositions.size(); i++){
+            if(Allpropositions.get(i).getSubmission().getId() == submissionID){// the proposition matches with the submission
+                hasMatched = true;
+                 propID = Allpropositions.get(i).getId();
+                break;
             }
         }
+        Submission submission = new Submission();
+        if (hasMatched){
+           submission = submisionRepository.findById(submissionID).get();
+            int mark = 0;
 
-        List<Question> questionListOneSubmission = questionRepository.findAll();
-        List<Questionnaire> questionnaireListOneSubmission = questionnaireRepository.findAll();
-        int mark = 0;
-        for(int i = 0; i<questionListOneSubmission.size(); i++){
-           mark += getMarkFromQuestion(propositionListForOneSubmission.get(i).getQuestion(),  propositionService.findPropositionById(propositionListForOneSubmission.get(i).getId()).get());
-            propositionListForOneSubmission.get(i).getQuestion();
+            mark += getMarkFromQuestion(questionRepository.findById(propositionService.getQuestionID(propID)).get(), propositionService.findPropositionById(propID).get());
+            submission.setMark(mark);
         }
-        submission.setMark(mark);
-        submisionRepository.save(submission);
-        return submission;
+        return submisionRepository.save(submission);
     }
 
     public int getMarkFromQuestion(Question question, Proposition proposition) {

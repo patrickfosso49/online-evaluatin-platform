@@ -16,5 +16,7 @@ public interface SubmissionService {
 
     public void deleteSubmissionById(Long ID);
 
-    public Submission correctSubmission(Submission submission);
+    public Submission updateSubmission(Submission submission, Long ID);
+
+    public Submission correctSubmission(Long submissionID);
 }
