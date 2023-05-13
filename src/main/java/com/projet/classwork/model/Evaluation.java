@@ -13,8 +13,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Evaluation {
    
     @Id
@@ -30,10 +36,15 @@ public class Evaluation {
     @Column
     private LocalDateTime time;
 
+    @Column
+    private LocalDateTime expiration;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Questionnaire questionnaire;
 
+    
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private Class class1;
+    private Classe classe;
 }

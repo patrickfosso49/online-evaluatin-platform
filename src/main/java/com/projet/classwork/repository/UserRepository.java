@@ -6,11 +6,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 import com.projet.classwork.model.User;
 
 @NoRepositoryBean
-public interface UserRepository< T extends User> extends JpaRepository<User, Long> {
+public interface UserRepository< T extends User> extends JpaRepository<T, Long> {
 
-    public T findByEmail(String email);
+    T findByEmail(String email);
 
-    public boolean existsByEmail(String email);
+     boolean existsByEmail(String email);
 
-    public boolean existsByRegistrationNumber(String registrationNumber);
+     boolean existsByRegistrationNumber(String registrationNumber);
 }

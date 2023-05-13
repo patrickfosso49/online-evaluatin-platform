@@ -1,9 +1,10 @@
 package com.projet.classwork.model;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Class {
+public class Classe {
    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -30,10 +31,18 @@ public class Class {
     private String name;
 
     
-    @OneToMany(mappedBy = "class1", fetch = FetchType.EAGER)
-    private Collection<Evaluation> evaluations;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Evaluation> evaluations;
+
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
+
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }

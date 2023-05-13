@@ -3,13 +3,17 @@ package com.projet.classwork.repository;
 
 import com.projet.classwork.model.Teacher;
 
+import org.springframework.stereotype.Repository;
+
+
+@Repository
 public interface TeacherRepository extends UserRepository<Teacher> {
 
    
-    public Teacher findByEmail(String email);
+     Teacher findByEmail(String email);
 
-    public boolean existsByEmail(String email);
+     boolean existsByEmail(String email);
 
-    public boolean existsByRegistrationNumber(String registrationNumber);
-    
+    boolean existsByRegistrationNumber(String registrationNumber);
+
 }
