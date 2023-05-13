@@ -1,0 +1,6 @@
+FROM postgres
+ENV POSTGRES_PASSWORD prunelle
+ENV POSTGRES_USER prunelle
+ENV POSTGRES_DB classwork_db
+
+COPY classwork.sql /docker-entrypoint-initdb.d/
