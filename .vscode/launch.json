@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ClassworkApplication<classwork>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.projet.classwork.ClassworkApplication",
+            "projectName": "classwork",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
