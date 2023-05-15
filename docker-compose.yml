@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  app:
+    container_name: evaluation_correction_crud
+    image: evaluation_correction_crud
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresqldb
+  postgresqldb:
+      image: postgres
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_USER=enterprisedb
+        - POSTGRES_PASSWORD=Motdepasse
+        - POSTGRES_DB=classwork_db
+
+
