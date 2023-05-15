@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,28 +23,34 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Evaluation {
-   
+    
+    public static enum Status {OPENED, CLOSED};
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String instructions;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime time;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Column
     private LocalDateTime expiration;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "evaluation")
     private Questionnaire questionnaire;
 
     
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Classe classe;

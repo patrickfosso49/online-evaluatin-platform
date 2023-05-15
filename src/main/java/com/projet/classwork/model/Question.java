@@ -2,6 +2,7 @@ package com.projet.classwork.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,10 +35,12 @@ public class Question {
     @Column
     private int duration;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private Answer answer;
-    
+   
+    @JsonIgnore
     @ManyToOne
     private Questionnaire questionnaire;
+
 
 }
