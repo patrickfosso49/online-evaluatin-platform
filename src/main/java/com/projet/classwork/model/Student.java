@@ -34,5 +34,6 @@ public class Student extends User{
 
     @OneToMany(mappedBy = "student")
     private List<Submission> submissions;
-    
+   
+
 }

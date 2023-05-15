@@ -45,4 +45,5 @@ public class Submission {
     @OneToMany(mappedBy = "submission", cascade = {CascadeType.MERGE})
     List<Proposition> propositions;
 
+
 }

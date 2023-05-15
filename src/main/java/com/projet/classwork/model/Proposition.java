@@ -3,8 +3,6 @@ package com.projet.classwork.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.projet.classwork.dto.PropositionDto;
-import com.projet.classwork.repository.PropositionRepository;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,5 +31,6 @@ public class Proposition {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Submission submission;
+
 
 }

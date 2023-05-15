@@ -26,4 +26,5 @@ public class Answer {
     @Column(nullable = false)
     private List<String> values;
 
+
 }

@@ -23,4 +23,5 @@ public class Teacher extends User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher", cascade = CascadeType.MERGE)
     private List<Classe> classes = new ArrayList<>();
 
+
 }

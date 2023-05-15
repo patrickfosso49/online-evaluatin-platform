@@ -60,4 +60,5 @@ public class Classe {
     public void addEvaluation(Evaluation evaluation) {
         evaluations.add(evaluation);
     }
+
 }
