@@ -1,6 +1,8 @@
 package com.projet.classwork.model;
 
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,42 +15,43 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Evaluation {
+@AllArgsConstructor
+public class Assignment { 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String instructions;
+    @Column(nullable = false, length = 15)
+    private String fileType;
 
     @Column(nullable = false)
-    private LocalDateTime time;
+    private LocalDateTime dateGiven;
 
-    @Column
+    @Column(nullable = false)
+    private LocalDateTime expirationDate;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column
-    private LocalDateTime expiration;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignment")
+    List<Copy> copies;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "evaluation")
-    private Questionnaire questionnaire;
-
-    
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne 
     private Classe classe;
 }

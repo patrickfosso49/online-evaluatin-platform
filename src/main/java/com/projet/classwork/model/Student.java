@@ -20,6 +20,16 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Student extends User{
 
+
+
+    @OneToMany(mappedBy = "student")
+    private List<Copy> copies;
+
+
+
+    @OneToMany(mappedBy = "student")
+    private List<Submission> submissions;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "student_classe",
@@ -32,8 +42,7 @@ public class Student extends User{
     )
     private List<Classe> classes;
 
-    @OneToMany(mappedBy = "student")
-    private List<Submission> submissions;
+
    
 
 }

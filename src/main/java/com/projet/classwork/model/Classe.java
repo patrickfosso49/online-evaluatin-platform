@@ -34,6 +34,9 @@ public class Classe {
     @OneToMany(mappedBy = "classe")
     private List<Evaluation> evaluations;
 
+    @OneToMany(mappedBy = "classe")
+    private List<Assignment> assignments;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
