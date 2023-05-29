@@ -17,7 +17,6 @@ import com.projet.classwork.model.Classe;
 import com.projet.classwork.model.Evaluation;
 import com.projet.classwork.model.Questionnaire;
 import com.projet.classwork.model.Teacher;
-import com.projet.classwork.model.Evaluation.Status;
 import com.projet.classwork.service.ClasseService;
 import com.projet.classwork.service.EvaluationService;
 import com.projet.classwork.service.QuestionnaireService;
@@ -73,7 +72,7 @@ public class TeacherController {
         for (Classe classe: teacher.getClasses()) {
             if(classe.getId() == classeId) {
                 evaluation.setClasse(classe);
-                evaluation.setStatus(Status.CLOSED); 
+              //  evaluation.setStatus(Status.CLOSED);
                 Evaluation body = evaluationService.save(evaluation);
 
                 if (body == null) return ResponseEntity.internalServerError().build();

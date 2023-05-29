@@ -18,11 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.projet.classwork.dto.SubmissionDto;
 import com.projet.classwork.model.Classe;
 import com.projet.classwork.model.Evaluation;
-import com.projet.classwork.model.Proposition;
-import com.projet.classwork.model.Questionnaire;
 import com.projet.classwork.model.Student;
 import com.projet.classwork.model.Submission;
 import com.projet.classwork.service.SubmissionService;
