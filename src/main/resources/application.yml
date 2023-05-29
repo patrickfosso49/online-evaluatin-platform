@@ -1,0 +1,7 @@
+#google drive api - setup
+
+google:
+  service_account_email: classwork-service@classwork-387005.iam.gserviceaccount.com
+  application_name: classwork
+  folder_id: 1-n9gid0Th6EzgVUH02qIRe_QKaX3VgFa
+  service_account_key: classwork-387005-872789e437e8.p12
