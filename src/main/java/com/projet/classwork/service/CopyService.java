@@ -30,14 +30,14 @@ public class CopyService {
         }
     }
 
-    public Copy save(Copy copy) {
 
+    public Copy save(Copy copy) {
         try {
             // initially, the link is the folder's path to the user's local device
-            String fileName = copy.getStudent().getFirstName()+"_"+copy.getStudent().getRegistrationNumber();
             String filePath = copy.getLink();
             String folderName = copy.getAssignment().getTitle();
-            String driveLink = uploadFileToDrive(filePath, fileName, folderName);
+            String driveLink = uploadFileToDrive(filePath, folderName);
+            System.out.println("link drive === "+driveLink);
             copy.setLink(driveLink);
             return copyRepository.save(copy);
         }
@@ -47,9 +47,9 @@ public class CopyService {
         }
     }
 
-    public String uploadFileToDrive(String filePath, String fileName, String folderName){
+    public String uploadFileToDrive(String filePath, String folderName){
         File file = new File(filePath);
-        com.google.api.services.drive.model.File driveFile = driveService.uploadFileToFolder(fileName, filePath, "application/pdf", folderName);
+        com.google.api.services.drive.model.File driveFile = driveService.uploadFileToFolder(file.getName(), file.getAbsolutePath(), "application/pdf", folderName);
         try {
             System.out.println(driveFile.getWebContentLink());
             return driveFile.getWebContentLink();
