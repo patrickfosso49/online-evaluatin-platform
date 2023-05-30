@@ -1,16 +1,12 @@
 package com.projet.classwork.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.projet.classwork.model.*;
+import com.projet.classwork.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.projet.classwork.service.ClasseService;
-import com.projet.classwork.service.EvaluationService;
-import com.projet.classwork.service.PropositionService;
-import com.projet.classwork.service.StudentService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.projet.classwork.model.Classe;
-import com.projet.classwork.model.Evaluation;
-import com.projet.classwork.model.Student;
-import com.projet.classwork.model.Submission;
-import com.projet.classwork.service.SubmissionService;
-import com.projet.classwork.service.QuestionnaireService;
-
 @RestController
-@RequestMapping("/api/v1/students")
+@RequestMapping("/api/v1/student")
 public class StudentController {
 
     private final StudentService studentService;
@@ -36,10 +25,12 @@ public class StudentController {
     private final EvaluationService evaluationService;
     private final ClasseService classeService;
 
+    private final CopyService copyService;
+
 
     
-    public StudentController(StudentService studentService,QuestionnaireService questionnaireService, PropositionService propositionService,
-        SubmissionService submissionService, EvaluationService evaluationService, ClasseService classeService) {
+    public StudentController(StudentService studentService, QuestionnaireService questionnaireService, PropositionService propositionService,
+                             SubmissionService submissionService, EvaluationService evaluationService, ClasseService classeService, CopyService copyService) {
                 
            this.studentService = studentService;
            this.questionnaireService = questionnaireService;
@@ -47,6 +38,7 @@ public class StudentController {
            this.submissionService = submissionService;
            this.evaluationService = evaluationService;
            this.classeService = classeService;
+           this.copyService = copyService;
     }
 
 
@@ -77,6 +69,10 @@ public class StudentController {
         } 
         return ResponseEntity.badRequest().build();
     }
+
+
+
+
     @GetMapping("")
     public ResponseEntity<?> findAll() {
         List<Student> body = studentService.findAll();
@@ -109,6 +105,37 @@ public class StudentController {
 
     }
 
+    @PostMapping("/{id}/copy/assignment/{assignmentId}")
+    public ResponseEntity<?> SubmitCopy(
+            @PathVariable("id") Long studentId, @PathVariable("assignmentId") Long assignmentId,
+            @RequestBody Copy copy) {
+        Student student = studentService.findById(studentId);
+        if(student == null) return ResponseEntity.noContent().build();
+
+        System.out.println("Here is the copy; "+copy.toString());
+        for(Classe classe :student.getClasses()) {
+            for(Assignment assignment: classe.getAssignments()) {
+
+                if (assignment.getId() == assignmentId) {
+                    System.out.println("HIIIIIIIIII");
+                    Copy body = copyService.createStudentCopy(copy, studentId, assignmentId);
+
+                    return (body == null) ? ResponseEntity.internalServerError().build() : ResponseEntity.created(null).body(body);
+                }
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/copy/{id}")
+    public List<Copy> findCopiesByStudent(@PathVariable("id") Long studentId) {
+        try {
+            return copyService.findByStudent(studentId);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 
 
 }

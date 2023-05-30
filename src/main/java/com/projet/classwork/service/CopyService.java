@@ -2,6 +2,7 @@ package com.projet.classwork.service;
 
 import com.projet.classwork.model.Assignment;
 import com.projet.classwork.model.Copy;
+import com.projet.classwork.model.Student;
 import com.projet.classwork.repository.CopyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ import java.util.List;
 public class CopyService {
 
     private CopyRepository copyRepository;
+    private StudentService studentService;
+    private AssignmentService assignmentService;
+
 
     @Autowired
     GoogleDriveService driveService;
@@ -31,14 +35,35 @@ public class CopyService {
     }
 
 
-    public Copy save(Copy copy) {
+    public Copy createStudentCopy(Copy copy, Long studentId, Long assignmentId) {
         try {
             // initially, the link is the folder's path to the user's local device
-            String filePath = copy.getLink();
-            String folderName = copy.getAssignment().getTitle();
-            String driveLink = uploadFileToDrive(filePath, folderName);
+            System.out.println("Here is the copy 1; "+copy.toString());
+            String filePath = copy.getLinkSent();
+            System.out.println("Here is the copy; 2"+copy.toString());
+            String driveLink = uploadFileToDrive(filePath, "Classwork_Copies");
             System.out.println("link drive === "+driveLink);
-            copy.setLink(driveLink);
+            Assignment assignment = assignmentService.findById(assignmentId);
+            Student student = studentService.findById(studentId);
+            copy.setAssignment(assignment);
+            copy.setStudent(student);
+            copy.setLinkSent(driveLink);
+
+            return copyRepository.save(copy);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Copy sendCorrectedCopy(Copy copy) {
+        try {
+            // initially, the link is the folder's path to the user's local device
+            String filePath = copy.getLinkSent();
+            String driveLink = uploadFileToDrive(filePath, "Classwork_Copies_Corrected");
+            System.out.println("link drive === "+driveLink);
+            copy.setLinkCorrected(driveLink);
             return copyRepository.save(copy);
         }
         catch (Exception e) {
@@ -51,8 +76,8 @@ public class CopyService {
         File file = new File(filePath);
         com.google.api.services.drive.model.File driveFile = driveService.uploadFileToFolder(file.getName(), file.getAbsolutePath(), "application/pdf", folderName);
         try {
-            System.out.println(driveFile.getWebContentLink());
-            return driveFile.getWebContentLink();
+            System.out.println(driveFile.getWebViewLink());
+            return driveFile.getWebViewLink();
         }catch (Exception e){
             e.printStackTrace();
             return null;

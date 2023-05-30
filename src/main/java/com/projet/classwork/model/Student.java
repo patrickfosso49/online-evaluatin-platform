@@ -20,12 +20,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Student extends User{
 
-
-
     @OneToMany(mappedBy = "student")
     private List<Copy> copies;
-
-
 
     @OneToMany(mappedBy = "student")
     private List<Submission> submissions;

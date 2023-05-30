@@ -48,6 +48,4 @@ public class AssignmentController {
     public Assignment createEvaluation(@RequestBody Assignment assignment) {
         return assignmentService.save(assignment);
     }
-
-
 }
