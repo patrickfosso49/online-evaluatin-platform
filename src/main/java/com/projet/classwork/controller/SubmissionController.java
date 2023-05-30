@@ -10,24 +10,24 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/submission")
+@RequestMapping("/api/v1/submission")
 public class SubmissionController {
 
     @Autowired
     private SubmissionService submissionService;
 
-    @PostMapping("/save")
+    @PostMapping("/")
     public Submission saveSubmission(
             @Validated @RequestBody Submission submission){
         return submissionService.save(submission);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/")
     public List<Submission> listSubmission(){
         return submissionService.fetchAllSubmission();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public Optional<Submission> getSubmissionByID(
             @PathVariable("id") Long submissionId){
         return submissionService.findSubmissionByID(submissionId);

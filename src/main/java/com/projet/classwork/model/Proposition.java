@@ -27,7 +27,7 @@ public class Proposition {
     @Column(nullable = false)
     private List<String> values;
 
-    @JsonIgnore
+   // @JsonIgnore
     @ManyToOne
     private Submission submission;
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/evaluation")
+@RequestMapping("/api/v1/evaluation")
 public class EvaluationController {
 
     @Autowired
@@ -22,22 +22,15 @@ public class EvaluationController {
     @Autowired
     private QuestionService questionService;
 
-    @PostMapping("/saveEvaluation")
+    @PostMapping("/")
     public Evaluation saveEvaluation(
-            @Validated @RequestBody Evaluation evaluation
+             @RequestBody Evaluation evaluation
     ) {
         return evaluationService.saveEvaluation(evaluation);
     }
 
-    @GetMapping("/listEvaluation")
+    @GetMapping("/")
     public List<Evaluation> listEvaluation(){
-
-      /*  Evaluation evaluation = new Evaluation();
-        evaluation.setTitle("Dummy Title");
-        evaluation.setInstructions("Dummy Instructions");
-        evaluation.setTime(LocalDateTime.now());
-        evaluation.setExpiration(LocalDateTime.now().plusDays(7));*/
-
         return evaluationService.fetchAllEvaluation();
     }
 
@@ -49,7 +42,7 @@ public class EvaluationController {
                 evaluation, evaluationID);
     }*/
 
-    @DeleteMapping("/deleteEvaluation/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteEvaluation(@PathVariable("id")
                                        Long evaluationID)
     {

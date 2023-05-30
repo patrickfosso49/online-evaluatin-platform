@@ -40,9 +40,4 @@ public class Classe {
     @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
 
-
-    @Override
-    public String toString() {
-        return null;
-    }
 }
