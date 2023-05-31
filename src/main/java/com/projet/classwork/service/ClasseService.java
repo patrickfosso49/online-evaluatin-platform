@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.projet.classwork.model.Classe;
 import com.projet.classwork.repository.ClasseRepository;
 
+import java.util.List;
+
 @Service
 public class ClasseService {
    
@@ -36,6 +38,15 @@ public class ClasseService {
     public Classe update(Classe classe) {
         try {
             return classeRepository.save(classe);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<Classe> findAll() {
+        try {
+            return classeRepository.findAll();
         }
         catch (Exception e) {
             return null;

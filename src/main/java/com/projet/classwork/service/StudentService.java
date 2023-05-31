@@ -2,6 +2,8 @@ package com.projet.classwork.service;
 
 import java.util.List;
 
+import com.projet.classwork.model.Classe;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.stereotype.Service;
 
 import com.projet.classwork.model.Student;
@@ -12,7 +14,7 @@ public class StudentService {
    
     private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, ClasseService classeService) {
         this.studentRepository = studentRepository;
     }
 

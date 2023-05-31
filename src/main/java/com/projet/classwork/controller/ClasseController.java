@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projet.classwork.model.Classe;
 import com.projet.classwork.service.ClasseService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/classes")
 public class ClasseController {
@@ -19,6 +21,13 @@ public class ClasseController {
     public ClasseController (ClasseService classeService) {
         this.classeService = classeService;
     }
+
+
+    @GetMapping("/")
+    public List<Classe> allClasses(){
+        return classeService.findAll();
+    }
+
 
     @PostMapping("/")
     public Classe create(@RequestBody Classe classe) {
