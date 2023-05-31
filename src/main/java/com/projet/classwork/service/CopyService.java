@@ -14,15 +14,17 @@ import java.util.List;
 public class CopyService {
 
     private CopyRepository copyRepository;
-    private StudentService studentService;
-    private AssignmentService assignmentService;
+    private final StudentService studentService;
+    private final AssignmentService assignmentService;
 
 
     @Autowired
     GoogleDriveService driveService;
 
-    public CopyService(CopyRepository copyRepository){
+    public CopyService(CopyRepository copyRepository, StudentService studentService, AssignmentService assignmentService){
         this.copyRepository = copyRepository;
+        this.studentService = studentService;
+        this.assignmentService = assignmentService;
     }
 
     public Copy findById(Long id){

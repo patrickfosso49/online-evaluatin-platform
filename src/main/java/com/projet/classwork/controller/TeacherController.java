@@ -52,7 +52,7 @@ public class TeacherController {
     }
 
     @PostMapping("/{id}/classes")
-    public ResponseEntity<?> create( @PathVariable("id") Long id, @RequestBody Classe classe) {
+    public ResponseEntity<?> createClasse( @PathVariable("id") Long id, @RequestBody Classe classe) {
         Teacher teacher = teacherService.findById(id);
 
         if(teacher == null) return ResponseEntity.noContent().build();
@@ -93,10 +93,11 @@ public class TeacherController {
         
         for (Classe classe : teacher.getClasses()) {
             if(classe.getId() == classeId) {
+                System.out.println("2");
                 for (Evaluation evaluation : classe.getEvaluations()) {
                     if (evaluation.getId() == evaluationId) {
+                        System.out.println("3");
                         Questionnaire body = questionnaireService.create(questionnaire,evaluationId); 
-                        
                         return (body == null) ? ResponseEntity.internalServerError().build() : ResponseEntity.created(null).body(questionnaire);
                     }
                 }
@@ -129,7 +130,7 @@ public class TeacherController {
         return teacherService.findById(id);
     }
 
-    @GetMapping("/{classeId}/evaluations")
+    @GetMapping("/classe/{classeId}/evaluations")
     public ResponseEntity<?> readEvaluations(@PathVariable("classeId") Long classeId) {
        
         Classe classe = classeService.findById(classeId);
@@ -145,9 +146,20 @@ public class TeacherController {
         
     }
 
+    @PostMapping(value="/classe/{id}/assignment")
+    public ResponseEntity<?> createAssignment( @PathVariable("id") Long id, @RequestBody Assignment assignment) {
+        Classe classe = classeService.findById(id);
+
+        if(classe == null) return ResponseEntity.noContent().build();
+
+        assignment.setClasse(classe);
+        Assignment body = assignmentService.save(assignment);
+
+        return (body == null) ?  ResponseEntity.badRequest().build() : ResponseEntity.created(null).body(body);
+    }
+
     @PostMapping("/{id}/student/{studentId}/assignment/{assignmentId}/")
     public ResponseEntity<?> sendCopyForAStudent(
-            @PathVariable("id") Long id,
             @PathVariable("studentId") Long studentId,
             @PathVariable("assignmentId") Long assignmentId,
             @RequestBody Copy copy) {

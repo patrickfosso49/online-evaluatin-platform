@@ -2,6 +2,7 @@ package com.projet.classwork.service;
 
 import java.util.List;
 
+import com.projet.classwork.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
 import com.projet.classwork.model.Evaluation;
@@ -19,11 +20,15 @@ import jakarta.transaction.Transactional;
 public class QuestionnaireService {
     
     private final QuestionnaireRepository questionnaireRepository;
+
     private final EntityManagerFactory entityManagerFactory;
+
+    private final QuestionRepository questionRepository;
     
-    public QuestionnaireService(QuestionnaireRepository questionnaireRepository, EntityManagerFactory entityManagerFactory) {
+    public QuestionnaireService(QuestionnaireRepository questionnaireRepository, EntityManagerFactory entityManagerFactory1, QuestionRepository questionRepository) {
         this.questionnaireRepository = questionnaireRepository;
-        this.entityManagerFactory = entityManagerFactory;
+        this.entityManagerFactory = entityManagerFactory1;
+        this.questionRepository = questionRepository;
     }
 
 
@@ -35,11 +40,12 @@ public class QuestionnaireService {
             return null;
         }
     }
-    
+
+
     @Transactional
     public Questionnaire create (Questionnaire questionnaire, Long evaluationId) {
-       
-        List<Question> questions = questionnaire.getQuestions();        
+
+        List<Question> questions = questionnaire.getQuestions();
         for (Question question: questions) {
             question.setQuestionnaire(questionnaire);
         }
@@ -49,7 +55,7 @@ public class QuestionnaireService {
         EntityTransaction entityTransaction = entityManager.getTransaction();
 
         entityTransaction.begin();
-       
+
         Evaluation evaluation = entityManager.find(Evaluation.class, evaluationId);
 
         questionnaire.setEvaluation(evaluation);
@@ -57,6 +63,6 @@ public class QuestionnaireService {
 
         entityTransaction.commit();
         entityManager.close();
-        return null;
+        return questionnaire;
     }
 }
