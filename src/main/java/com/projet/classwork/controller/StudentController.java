@@ -1,6 +1,9 @@
 package com.projet.classwork.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.projet.classwork.model.*;
 import com.projet.classwork.service.*;
@@ -19,26 +22,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class StudentController {
 
     private final StudentService studentService;
-    private final QuestionnaireService questionnaireService;
     private final SubmissionService submissionService;
-    private final PropositionService propositionService;
-    private final EvaluationService evaluationService;
+
     private final ClasseService classeService;
 
     private final CopyService copyService;
 
 
     
-    public StudentController(StudentService studentService, QuestionnaireService questionnaireService, PropositionService propositionService,
-                             SubmissionService submissionService, EvaluationService evaluationService, ClasseService classeService, CopyService copyService) {
-                
+    public StudentController(StudentService studentService,
+                             SubmissionService submissionService, ClasseService classeService, ClasseService classeService1, CopyService copyService) {
+
            this.studentService = studentService;
-           this.questionnaireService = questionnaireService;
-           this.propositionService = propositionService;
+
            this.submissionService = submissionService;
-           this.evaluationService = evaluationService;
-           this.classeService = classeService;
-           this.copyService = copyService;
+        this.classeService = classeService1;
+
+        this.copyService = copyService;
     }
 
 
@@ -87,24 +87,47 @@ public class StudentController {
         if (student == null) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(student);
-
     }
 
 
-    @PutMapping("/{id}/classes/{classeId}")
-    public ResponseEntity<?> joinClasse(@PathVariable("id") Long id, @PathVariable("classeId") Long classeId) {
+    @PutMapping("/{id}/classes/{classeId}/")
+    public ResponseEntity joinClasse(@PathVariable("id") Long studentId, @PathVariable("classeId") Long classeId) {
+        System.out.println("id is => "+ studentId);
+        Student student = studentService.findById(studentId);
+        System.out.println("student => "+student.getEmail());
 
-        Student body = studentService.findById(id);
+        if(student == null){
+            System.out.println("ok null");
+            return ResponseEntity.badRequest().build();
+        }
+
+        ConcurrentHashMap<Long, Classe> classMap = new ConcurrentHashMap<>();
+        List<Classe> classes = student.getClasses();
+        List<Classe> classCopy = new ArrayList<>(classes);
+        for (Classe c : classCopy) {
+            classMap.put(c.getId(), c);
+        }
+        if (classes.isEmpty()){
+            System.out.println("NO classes yet");
+            Classe classe = classeService.findById(classeId);
+            classe.addStudent(student);
+            student = studentService.save(student);
+            return ResponseEntity.ok(student);
+        }
+
+        Student body = null;
+      //  ConcurrentHashMap<Long, Classe> newClasses = new ConcurrentHashMap<>(classMap);
+
+
         Classe classe = classeService.findById(classeId);
-         
-        body = studentService.save(body);
+        classe.addStudent(student);
+        body = studentService.save(student);
+        if (body == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        if (body == null) return ResponseEntity.badRequest().build();
-
-        return ResponseEntity.ok(body);
-
+        return ResponseEntity.ok(student);
     }
-
     @PostMapping("/{id}/copy/assignment/{assignmentId}")
     public ResponseEntity<?> SubmitCopy(
             @PathVariable("id") Long studentId, @PathVariable("assignmentId") Long assignmentId,

@@ -39,11 +39,13 @@ public class StudentService {
     }
 
     public Student save(Student student) {
-        
+
         try {
-           return studentRepository.save(student);
+            System.out.println("hi");
+            return studentRepository.save(student);
         }
         catch (Exception e) {
+            System.out.println("hi null");
             return null;
         }
     }

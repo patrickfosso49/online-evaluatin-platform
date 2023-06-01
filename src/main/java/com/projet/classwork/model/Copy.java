@@ -26,10 +26,10 @@ public class Copy {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = false)
     private String linkSent;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = false)
     private String linkCorrected;
 
     @Column(nullable = false)
