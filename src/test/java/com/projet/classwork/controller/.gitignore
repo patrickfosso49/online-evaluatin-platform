@@ -1,4 +1,10 @@
 HELP.md
+
+###database
+database/
+dockerfile
+init-script.sql
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

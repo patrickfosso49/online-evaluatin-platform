@@ -1,0 +1,22 @@
+version: '2'
+
+
+services:
+
+  dbms:
+
+    build:
+      context: ./database
+
+    ports:
+      - 5432:5432
+
+
+  backend:
+    build: 
+      context: .
+      
+    ports:
+        - 8080:8080
+
+
