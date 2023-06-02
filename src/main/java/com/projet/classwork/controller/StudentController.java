@@ -8,22 +8,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import com.projet.classwork.service.ClasseService;
+import com.projet.classwork.service.MailService;
+import com.projet.classwork.service.StudentService;
+
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.projet.classwork.model.Classe;
+import com.projet.classwork.model.Evaluation;
+import com.projet.classwork.model.Student;
+import com.projet.classwork.model.Submission;
+import com.projet.classwork.service.SubmissionService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/api/v1/student")
 public class StudentController {
 
     private final StudentService studentService;
-    private final QuestionnaireService questionnaireService;
     private final SubmissionService submissionService;
-    private final PropositionService propositionService;
-    private final EvaluationService evaluationService;
     private final ClasseService classeService;
+    private final MailService mailService; 
+
 
     private final CopyService copyService;
 
@@ -63,7 +78,10 @@ public class StudentController {
                 if (evaluation.getQuestionnaire().getId() == questionnaireId) {
                     Submission body = submissionService.create(submission, id, questionnaireId);
 
-                    return (body == null) ? ResponseEntity.internalServerError().build() : ResponseEntity.created(null).body(body);
+                    if (body == null) {
+                        return ResponseEntity.badRequest().build();
+                    }
+                    mailService.sendEmail(student.getEmail(), evaluation.getTitle(), "Hi, your mark is available for this evaluation on classwork"); 
                 }
             }
         } 
@@ -94,16 +112,30 @@ public class StudentController {
     @PutMapping("/{id}/classes/{classeId}")
     public ResponseEntity<?> joinClasse(@PathVariable("id") Long id, @PathVariable("classeId") Long classeId) {
 
-        Student body = studentService.findById(id);
-        Classe classe = classeService.findById(classeId);
-         
-        body = studentService.save(body);
+        Student student = studentService.findById(id);
+        
+        if(student == null) return ResponseEntity.badRequest().build();
+        Student body = null;
+        for (Classe classe: student.getClasses()) {
+            if (classe.getId() == classeId) {
+                classe.addStudent(student);
+                body = studentService.save(student);
+                
+            }
+        }
 
         if (body == null) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(body);
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> put(@PathVariable("id") Long id, @RequestBody Student student) {
+        Student body = studentService.findById(id);
+        body.setEmail(student.getEmail());
+        body = studentService.save(body);
+        if(body == null){ return ResponseEntity.badRequest().build();}
 
     @PostMapping("/{id}/copy/assignment/{assignmentId}")
     public ResponseEntity<?> SubmitCopy(
@@ -137,5 +169,8 @@ public class StudentController {
         }
     }
 
+
+        return ResponseEntity.ok(body);
+    }
 
 }
