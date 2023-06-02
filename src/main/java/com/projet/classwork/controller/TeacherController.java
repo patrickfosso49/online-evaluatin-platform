@@ -159,9 +159,9 @@ public class TeacherController {
 
         if(teacher == null) return ResponseEntity.badRequest().build();
 
-        List<Classe> body = null;
+        List<Classe> body = new ArrayList<>();
         for (Classe classe1: teacher.getClasses()){
-            body = new ArrayList<>();
+            System.out.println("classes = > "+classe1.toString());
             body.add(classe1);
         }
 
