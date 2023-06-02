@@ -130,20 +130,45 @@ public class TeacherController {
         return teacherService.findById(id);
     }
 
-    @GetMapping("/classe/{classeId}/evaluations")
-    public ResponseEntity<?> readEvaluations(@PathVariable("classeId") Long classeId) {
+    @GetMapping("/{id}/classe/{classeId}/evaluations")
+    public ResponseEntity<?> readEvaluationsOfTeacherInClasse(@PathVariable("id") Long id, @PathVariable("classeId") Long classeId) {
        
         Classe classe = classeService.findById(classeId);
+        Teacher teacher = teacherService.findById(id);
         
-        if(classe == null) return ResponseEntity.noContent().build();
+        if(classe == null || teacher == null) return ResponseEntity.badRequest().build();
 
         List<Evaluation> body = new ArrayList<>();
-        body = evaluationService.findEvaluations(classe);
-
-        if (body == null) return ResponseEntity.badRequest().build();
+        for (Classe classe1: teacher.getClasses()){
+            if(classe1.getId() == classeId){
+                body = evaluationService.findEvaluations(classe1);
+            }
+        }
+        
+        if (body == null) return ResponseEntity.noContent().build();
        
         return ResponseEntity.ok(body);
         
+    }
+
+    @GetMapping("/{id}/classe")
+    public ResponseEntity<?> getTeacherClasses(@PathVariable("id") Long id) {
+
+  
+        Teacher teacher = teacherService.findById(id);
+
+        if(teacher == null) return ResponseEntity.badRequest().build();
+
+        List<Classe> body = null;
+        for (Classe classe1: teacher.getClasses()){
+            body = new ArrayList<>();
+            body.add(classe1);
+        }
+
+        if (body == null) return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(body);
+
     }
 
     @PostMapping(value="/classe/{id}/assignment")
